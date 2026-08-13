@@ -109,3 +109,25 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+.strength-tips {
+  text-align: left;
+  font-size: 13px;
+  line-height: 140%;
+  color: var(--text);
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 6px 0;
+}
+
+.strength-tips ul {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}
+
+.strength-warning {
+  color: var(--text-h);
+  font-weight: 500;
+}
