@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "cross-env NODE_ENV=test node --test",
+    "test": "cross-env NODE_ENV=test node --test --test-concurrency=1",
     "db:migrate": "node db/migrate.js",
     "db:migrate:test": "cross-env NODE_ENV=test node db/migrate.js"
   },
