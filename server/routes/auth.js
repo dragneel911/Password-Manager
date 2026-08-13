@@ -21,19 +21,20 @@ function setAuthCookie(res, token) {
 router.post('/register', async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    if (!email || !EMAIL_RE.test(email)) {
+    const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : email;
+    if (!normalizedEmail || !EMAIL_RE.test(normalizedEmail)) {
       return res.status(400).json({ error: 'A valid email is required' });
     }
     if (!password || password.length < 8) {
       return res.status(400).json({ error: 'Password must be at least 8 characters' });
     }
-    const existing = await findUserByEmail(email);
+    const existing = await findUserByEmail(normalizedEmail);
     if (existing) {
       return res.status(409).json({ error: 'Email already registered' });
     }
     const passwordHash = await hashPassword(password);
     const encryptionSalt = generateSalt();
-    const user = await createUser({ email, passwordHash, encryptionSalt });
+    const user = await createUser({ email: normalizedEmail, passwordHash, encryptionSalt });
     const token = signToken({ userId: user.id, email: user.email });
     setAuthCookie(res, token);
     res.status(201).json({ id: user.id, email: user.email });
@@ -45,7 +46,8 @@ router.post('/register', async (req, res, next) => {
 router.post('/login', async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const user = await findUserByEmail(email || '');
+    const normalizedEmail = typeof email === 'string' ? email.trim().toLowerCase() : email;
+    const user = await findUserByEmail(normalizedEmail || '');
     if (!user) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }

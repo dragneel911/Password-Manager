@@ -47,8 +47,13 @@ function Dashboard({ user, onLogout }) {
   }
 
   async function handleLogout() {
-    await api.logout();
-    onLogout();
+    try {
+      await api.logout();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      onLogout();
+    }
   }
 
   return (
@@ -58,9 +63,10 @@ function Dashboard({ user, onLogout }) {
         <button onClick={handleLogout}>Log out</button>
       </header>
       {error && <p role="alert">{error}</p>}
-      <button onClick={() => { setEditingEntry(null); setShowForm(true); }}>Add entry</button>
+      <button onClick={() => { setEditingEntry(null); setShowForm(true); setError(''); }}>Add entry</button>
       {showForm && (
         <VaultEntryForm
+          key={editingEntry?.id ?? 'new'}
           initialEntry={editingEntry}
           onSave={handleSave}
           onCancel={() => { setShowForm(false); setEditingEntry(null); }}
@@ -68,7 +74,7 @@ function Dashboard({ user, onLogout }) {
       )}
       <VaultEntryList
         entries={entries}
-        onEdit={(entry) => { setEditingEntry(entry); setShowForm(true); }}
+        onEdit={(entry) => { setEditingEntry(entry); setShowForm(true); setError(''); }}
         onDelete={handleDelete}
       />
     </div>

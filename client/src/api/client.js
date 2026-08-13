@@ -10,6 +10,9 @@ async function request(path, options = {}) {
   if (!res.ok) {
     const error = new Error(data?.error || 'Request failed');
     error.status = res.status;
+    if (res.status === 401 && !['/auth/me', '/auth/login', '/auth/register'].includes(path)) {
+      window.location.assign('/login');
+    }
     throw error;
   }
   return data;

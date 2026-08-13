@@ -69,3 +69,15 @@ test('vault routes return 401 without a session', async () => {
   const res = await request(app).get('/api/vault');
   assert.strictEqual(res.status, 401);
 });
+
+test('PUT /api/vault/:id returns 404 for a non-numeric id', async () => {
+  const agent = await registeredAgent('vault6@example.com');
+  const res = await agent.put('/api/vault/abc').send({ title: 'New', password: 'new-pw' });
+  assert.strictEqual(res.status, 404);
+});
+
+test('DELETE /api/vault/:id returns 404 for a non-numeric id', async () => {
+  const agent = await registeredAgent('vault7@example.com');
+  const res = await agent.delete('/api/vault/abc');
+  assert.strictEqual(res.status, 404);
+});

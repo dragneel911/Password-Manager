@@ -31,12 +31,18 @@ router.get('/', async (req, res, next) => {
     const user = await findUserById(req.user.id);
     const key = deriveKey(user.encryption_salt);
     const entries = await findEntriesByUserId(req.user.id);
-    const decrypted = entries.map((entry) =>
-      serializeEntry(
-        entry,
-        decrypt({ ciphertext: entry.encrypted_password, iv: entry.iv, authTag: entry.auth_tag }, key)
-      )
-    );
+    const decrypted = entries.map((entry) => {
+      let plainPassword;
+      try {
+        plainPassword = decrypt(
+          { ciphertext: entry.encrypted_password, iv: entry.iv, authTag: entry.auth_tag },
+          key
+        );
+      } catch (err) {
+        plainPassword = null;
+      }
+      return serializeEntry(entry, plainPassword);
+    });
     res.json(decrypted);
   } catch (err) {
     next(err);
@@ -70,7 +76,11 @@ router.post('/', async (req, res, next) => {
 
 router.put('/:id', async (req, res, next) => {
   try {
-    const existing = await findEntryById(req.params.id);
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id)) {
+      return res.status(404).json({ error: 'Entry not found' });
+    }
+    const existing = await findEntryById(id);
     if (!existing || existing.user_id !== req.user.id) {
       return res.status(404).json({ error: 'Entry not found' });
     }
@@ -81,7 +91,7 @@ router.put('/:id', async (req, res, next) => {
     const user = await findUserById(req.user.id);
     const key = deriveKey(user.encryption_salt);
     const { ciphertext, iv, authTag } = encrypt(password, key);
-    const entry = await updateEntry(req.params.id, {
+    const entry = await updateEntry(id, {
       title,
       username: username || null,
       encryptedPassword: ciphertext,
@@ -98,11 +108,15 @@ router.put('/:id', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
   try {
-    const existing = await findEntryById(req.params.id);
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id)) {
+      return res.status(404).json({ error: 'Entry not found' });
+    }
+    const existing = await findEntryById(id);
     if (!existing || existing.user_id !== req.user.id) {
       return res.status(404).json({ error: 'Entry not found' });
     }
-    await deleteEntry(req.params.id);
+    await deleteEntry(id);
     res.status(204).end();
   } catch (err) {
     next(err);
