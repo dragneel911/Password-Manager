@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
+import Dashboard from './pages/Dashboard.jsx';
 import { api } from './api/client.js';
 
 function App() {
@@ -22,6 +23,10 @@ function App() {
       <Routes>
         <Route path="/login" element={user ? <Navigate to="/dashboard" /> : <Login onAuth={setUser} />} />
         <Route path="/register" element={user ? <Navigate to="/dashboard" /> : <Register onAuth={setUser} />} />
+        <Route
+          path="/dashboard"
+          element={user ? <Dashboard user={user} onLogout={() => setUser(null)} /> : <Navigate to="/login" />}
+        />
         <Route path="*" element={<Navigate to={user ? '/dashboard' : '/login'} />} />
       </Routes>
     </BrowserRouter>
