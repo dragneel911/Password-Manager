@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
+  encryption_salt TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS vault_entries (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  title VARCHAR(255) NOT NULL,
+  username VARCHAR(255),
+  encrypted_password TEXT NOT NULL,
+  iv TEXT NOT NULL,
+  auth_tag TEXT NOT NULL,
+  url VARCHAR(2048),
+  notes TEXT,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
