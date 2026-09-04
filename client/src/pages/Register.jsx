@@ -25,6 +25,8 @@ function Register({ onAuth }) {
     <div className="auth-page">
       <div className="auth-panel">
         <div className="vault-mark" />
+        <p className="brand-title">Pandora Vault</p>
+        <p className="brand-tagline">Secure against demons</p>
         <h1>Create account</h1>
         {error && <p className="form-error" role="alert">{error}</p>}
         <form onSubmit={handleSubmit} className="auth-form">

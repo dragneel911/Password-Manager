@@ -61,7 +61,7 @@ function Dashboard({ user, onLogout }) {
       <header className="dashboard-header">
         <div className="brand">
           <div className="vault-mark small" />
-          <h1>Vault</h1>
+          <h1 className="brand-title">Pandora Vault</h1>
         </div>
         <div className="header-actions">
           <span className="user-email">{user.email}</span>
