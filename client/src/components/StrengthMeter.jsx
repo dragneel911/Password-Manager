@@ -7,9 +7,9 @@ function StrengthMeter({ password }) {
   const { score, feedback } = zxcvbn(password);
   const hasTips = feedback.warning || feedback.suggestions.length > 0;
   return (
-    <div>
-      <progress value={score} max={4} />
-      <span>{LABELS[score]}</span>
+    <div className={`strength strength-${score}`}>
+      <progress className="strength-bar" value={score} max={4} />
+      <span className="strength-label">{LABELS[score]}</span>
       {hasTips && (
         <div className="strength-tips">
           {feedback.warning && <p className="strength-warning">{feedback.warning}</p>}

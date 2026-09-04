@@ -22,21 +22,26 @@ function Register({ onAuth }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Create account</h1>
-      {error && <p role="alert">{error}</p>}
-      <label>
-        Email
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      </label>
-      <label>
-        Master password
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} />
-      </label>
-      <StrengthMeter password={password} />
-      <button type="submit">Register</button>
-      <p>Already have an account? <Link to="/login">Log in</Link></p>
-    </form>
+    <div className="auth-page">
+      <div className="auth-panel">
+        <div className="vault-mark" />
+        <h1>Create account</h1>
+        {error && <p className="form-error" role="alert">{error}</p>}
+        <form onSubmit={handleSubmit} className="auth-form">
+          <label className="field">
+            <span className="field-label">Email</span>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          </label>
+          <label className="field">
+            <span className="field-label">Master password</span>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} />
+          </label>
+          <StrengthMeter password={password} />
+          <button type="submit" className="btn btn-primary">Register</button>
+        </form>
+        <p className="auth-switch">Already have an account? <Link to="/login">Log in</Link></p>
+      </div>
+    </div>
   );
 }
 

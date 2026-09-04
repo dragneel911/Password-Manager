@@ -21,20 +21,25 @@ function Login({ onAuth }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Log in</h1>
-      {error && <p role="alert">{error}</p>}
-      <label>
-        Email
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      </label>
-      <label>
-        Master password
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-      </label>
-      <button type="submit">Log in</button>
-      <p>No account? <Link to="/register">Register</Link></p>
-    </form>
+    <div className="auth-page">
+      <div className="auth-panel">
+        <div className="vault-mark" />
+        <h1>Log in</h1>
+        {error && <p className="form-error" role="alert">{error}</p>}
+        <form onSubmit={handleSubmit} className="auth-form">
+          <label className="field">
+            <span className="field-label">Email</span>
+            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          </label>
+          <label className="field">
+            <span className="field-label">Master password</span>
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          </label>
+          <button type="submit" className="btn btn-primary">Log in</button>
+        </form>
+        <p className="auth-switch">No account? <Link to="/register">Register</Link></p>
+      </div>
+    </div>
   );
 }
 

@@ -15,29 +15,31 @@ function VaultEntryForm({ initialEntry, onSave, onCancel }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>
-        Title
+      <label className="field">
+        <span className="field-label">Title</span>
         <input value={title} onChange={(e) => setTitle(e.target.value)} required />
       </label>
-      <label>
-        Username
+      <label className="field">
+        <span className="field-label">Username</span>
         <input value={username} onChange={(e) => setUsername(e.target.value)} />
       </label>
-      <label>
-        Password
+      <label className="field field-mono">
+        <span className="field-label">Password</span>
         <input type="text" value={password} onChange={(e) => setPassword(e.target.value)} required />
       </label>
       <StrengthMeter password={password} />
-      <label>
-        URL
+      <label className="field">
+        <span className="field-label">URL</span>
         <input value={url} onChange={(e) => setUrl(e.target.value)} />
       </label>
-      <label>
-        Notes
+      <label className="field">
+        <span className="field-label">Notes</span>
         <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
       </label>
-      <button type="submit">Save</button>
-      <button type="button" onClick={onCancel}>Cancel</button>
+      <div className="panel-actions">
+        <button type="submit" className="btn btn-primary">Save</button>
+        <button type="button" className="btn btn-ghost" onClick={onCancel}>Cancel</button>
+      </div>
     </form>
   );
 }

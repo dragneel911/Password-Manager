@@ -16,7 +16,7 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <div className="auth-page"><p className="user-email">Loading…</p></div>;
 
   return (
     <BrowserRouter>

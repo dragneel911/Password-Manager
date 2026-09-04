@@ -57,20 +57,36 @@ function Dashboard({ user, onLogout }) {
   }
 
   return (
-    <div>
-      <header>
-        <h1>Vault — {user.email}</h1>
-        <button onClick={handleLogout}>Log out</button>
+    <div className="dashboard">
+      <header className="dashboard-header">
+        <div className="brand">
+          <div className="vault-mark small" />
+          <h1>Vault</h1>
+        </div>
+        <div className="header-actions">
+          <span className="user-email">{user.email}</span>
+          <button type="button" className="btn btn-ghost" onClick={handleLogout}>Log out</button>
+        </div>
       </header>
-      {error && <p role="alert">{error}</p>}
-      <button onClick={() => { setEditingEntry(null); setShowForm(true); setError(''); }}>Add entry</button>
+      {error && <p className="form-error" role="alert">{error}</p>}
+      <div className="dashboard-toolbar">
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => { setEditingEntry(null); setShowForm(true); setError(''); }}
+        >
+          Add entry
+        </button>
+      </div>
       {showForm && (
-        <VaultEntryForm
-          key={editingEntry?.id ?? 'new'}
-          initialEntry={editingEntry}
-          onSave={handleSave}
-          onCancel={() => { setShowForm(false); setEditingEntry(null); }}
-        />
+        <div className="panel-wrap">
+          <VaultEntryForm
+            key={editingEntry?.id ?? 'new'}
+            initialEntry={editingEntry}
+            onSave={handleSave}
+            onCancel={() => { setShowForm(false); setEditingEntry(null); }}
+          />
+        </div>
       )}
       <VaultEntryList
         entries={entries}
